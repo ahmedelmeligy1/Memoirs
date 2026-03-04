@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ذاكرة الأجيال</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+/* ===== VARIABLES ===== */
+:root{
+  --p:#FF6B9D;--pl:#FFB3CF;--pd:#C0396B;
+  --s:#FFD166;--a:#06D6A0;
+  --bg:#FFF0F5;--bg2:#FFE5EF;--card:#fff;
+  --txt:#2D2D2D;--muted:#999;
+  --sh:rgba(255,107,157,.18);
+  --r:18px;
+  --grad:linear-gradient(135deg,#FF6B9D,#FFB3CF,#FFD166);
+}
+body.blue{--p:#4FC3F7;--pl:#B3E5FC;--pd:#0288D1;--s:#81D4FA;--bg:#E3F2FD;--bg2:#BBDEFB;--sh:rgba(79,195,247,.18);--grad:linear-gradient(135deg,#4FC3F7,#B3E5FC,#FFF176);}
+body.green{--p:#43D9A2;--pl:#A7F3D0;--pd:#059669;--s:#FCD34D;--bg:#ECFDF5;--bg2:#D1FAE5;--sh:rgba(67,217,162,.18);--grad:linear-gradient(135deg,#43D9A2,#A7F3D0,#FCD34D);}
+body.orange{--p:#FB923C;--pl:#FED7AA;--pd:#EA580C;--s:#FDE68A;--bg:#FFF7ED;--bg2:#FFEDD5;--sh:rgba(251,146,60,.18);--grad:linear-gradient(135deg,#FB923C,#FED7AA,#A78BFA);}
+body.purple{--p:#A78BFA;--pl:#DDD6FE;--pd:#7C3AED;--s:#F0ABFC;--bg:#F5F3FF;--bg2:#EDE9FE;--sh:rgba(167,139,250,.18);--grad:linear-gradient(135deg,#A78BFA,#DDD6FE,#34D399);}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;transition:background .4s;}
+body.ltr{direction:ltr;font-family:'Nunito',sans-serif;}
+
+/* ===== TOPBAR ===== */
+.topbar{background:var(--card);border-bottom:2px solid var(--pl);padding:8px 16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px var(--sh);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.logo{font-size:1.2rem;font-weight:900;color:var(--p);display:flex;align-items:center;gap:6px;}
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.stage-sw{display:flex;gap:4px;background:var(--bg2);border-radius:30px;padding:4px;}
+.sbtn{border:none;background:transparent;padding:5px 12px;border-radius:25px;cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;color:var(--muted);transition:all .3s;white-space:nowrap;}
+.sbtn.active{background:var(--p);color:#fff;box-shadow:0 2px 8px var(--sh);}
+.palette{display:flex;gap:5px;align-items:center;}
+.dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s,border-color .2s;}
+.dot:hover{transform:scale(1.25);}
+.dot.active{border-color:#333;transform:scale(1.15);}
+.langbtn{border:2px solid var(--p);background:transparent;padding:4px 12px;border-radius:20px;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:700;color:var(--p);transition:all .3s;}
+.langbtn:hover{background:var(--p);color:#fff;}
+
+/* ===== COVER ===== */
+.cover{position:relative;height:240px;background:var(--grad);overflow:hidden;transition:background .4s;}
+@media(min-width:600px){.cover{height:300px;}}
+.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,.15);animation:fb 6s ease-in-out infinite;}
+.bubble:nth-child(1){width:80px;height:80px;top:20%;left:8%;animation-delay:0s;}
+.bubble:nth-child(2){width:50px;height:50px;top:55%;left:22%;animation-delay:1s;}
+.bubble:nth-child(3){width:110px;height:110px;top:5%;right:12%;animation-delay:2s;}
+.bubble:nth-child(4){width:35px;height:35px;top:65%;right:28%;animation-delay:.5s;}
+.bubble:nth-child(5){width:65px;height:65px;bottom:8%;left:48%;animation-delay:1.5s;}
+@keyframes fb{0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+.cemoji{position:absolute;font-size:2rem;opacity:.55;animation:fb 5s ease-in-out infinite;}
+.cemoji:nth-child(6){top:14%;left:7%;font-size:2.5rem;animation-delay:.3s;}
+.cemoji:nth-child(7){top:38%;right:7%;font-size:2rem;animation-delay:1.2s;}
+.cemoji:nth-child(8){bottom:18%;left:38%;font-size:1.8rem;animation-delay:.8s;}
+.sbadge{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.28);backdrop-filter:blur(10px);padding:6px 20px;border-radius:30px;color:#fff;font-weight:700;font-size:.82rem;border:1px solid rgba(255,255,255,.4);white-space:nowrap;}
+.cover-edit-btn{position:absolute;bottom:12px;right:12px;background:rgba(255,255,255,.3);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.5);color:#fff;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-weight:700;transition:all .2s;}
+.cover-edit-btn:hover{background:rgba(255,255,255,.5);}
+
+/* ===== PROFILE CARD ===== */
+.wrap{max-width:880px;margin:0 auto;padding:0 14px;}
+.pcard{background:var(--card);border-radius:var(--r);box-shadow:0 6px 28px var(--sh);margin-top:-55px;position:relative;z-index:2;overflow:hidden;}
+.ptop{display:flex;flex-direction:column;align-items:center;padding:0 20px 16px;gap:10px;}
+@media(min-width:600px){.ptop{flex-direction:row;align-items:flex-end;gap:18px;}}
+.avwrap{position:relative;margin-top:-48px;}
+.av{width:105px;height:105px;border-radius:50%;border:5px solid var(--card);box-shadow:0 4px 18px var(--sh);object-fit:cover;background:var(--pl);display:flex;align-items:center;justify-content:center;font-size:2.8rem;overflow:hidden;cursor:pointer;transition:opacity .2s;}
+.av:hover{opacity:.85;}
+@media(min-width:600px){.av{width:125px;height:125px;}}
+.av-edit{position:absolute;bottom:4px;right:4px;background:var(--p);color:#fff;width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;border:3px solid var(--card);cursor:pointer;}
+.pinfo{flex:1;padding:14px 0 6px;text-align:center;}
+@media(min-width:600px){.pinfo{text-align:right;}}
+body.ltr .pinfo{text-align:left;}
+.pname{font-size:1.5rem;font-weight:900;line-height:1.2;}
+.psub{font-size:.82rem;color:var(--muted);margin-top:3px;}
+.ptags{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;justify-content:center;}
+@media(min-width:600px){.ptags{justify-content:flex-end;}}
+body.ltr .ptags{justify-content:flex-start;}
+.ptag{background:var(--bg2);color:var(--pd);padding:3px 11px;border-radius:20px;font-size:.72rem;font-weight:700;}
+.pstats{display:flex;justify-content:center;border-top:1px solid var(--bg2);border-bottom:1px solid var(--bg2);}
+.pstat{flex:1;text-align:center;padding:12px 6px;border-left:1px solid var(--bg2);cursor:pointer;transition:background .2s;}
+.pstat:last-child{border-left:none;}
+body.ltr .pstat{border-left:none;border-right:1px solid var(--bg2);}
+body.ltr .pstat:last-child{border-right:none;}
+.pstat:hover{background:var(--bg);}
+.pstat-n{font-size:1.1rem;font-weight:900;color:var(--p);display:block;}
+.pstat-l{font-size:.65rem;color:var(--muted);margin-top:1px;display:block;}
+
+/* ===== TABS ===== */
+.tabswrap{max-width:880px;margin:18px auto 0;padding:0 14px;}
+.tabsbar{display:flex;overflow-x:auto;background:var(--card);border-radius:14px 14px 0 0;box-shadow:0 3px 14px var(--sh);padding:5px 5px 0;scrollbar-width:none;gap:2px;}
+.tabsbar::-webkit-scrollbar{display:none;}
+.tbtn{flex:none;min-width:max-content;padding:9px 16px;border:none;background:transparent;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;transition:all .25s;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:5px;}
+.tbtn:hover{color:var(--p);background:var(--bg);}
+.tbtn.active{color:var(--p);border-bottom-color:var(--p);background:var(--bg);}
+
+/* ===== TAB CONTENT ===== */
+.tcontent{background:var(--card);border-radius:0 0 14px 14px;box-shadow:0 4px 14px var(--sh);padding:22px;display:none;min-height:200px;}
+.tcontent.active{display:block;animation:fiu .3s ease;}
+@keyframes fiu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.sec-title{font-size:1rem;font-weight:900;color:var(--pd);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--pl),transparent);border-radius:2px;}
+body.ltr .sec-title::after{background:linear-gradient(270deg,var(--pl),transparent);}
+
+/* ===== ADD BUTTON ===== */
+.add-btn{display:inline-flex;align-items:center;gap:7px;background:var(--p);color:#fff;border:none;padding:9px 20px;border-radius:25px;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:700;box-shadow:0 3px 12px var(--sh);transition:all .25s;margin-bottom:18px;}
+.add-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--sh);}
+.add-btn i{font-size:.85rem;}
+
+/* ===== EMPTY STATE ===== */
+.empty{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-icon{font-size:3rem;margin-bottom:10px;display:block;opacity:.5;}
+.empty-txt{font-size:.88rem;}
+
+/* ===== GRID LAYOUTS ===== */
+.grid2{display:grid;grid-template-columns:1fr;gap:14px;}
+@media(min-width:580px){.grid2{grid-template-columns:1fr 1fr;}}
+@media(min-width:860px){.grid3{grid-template-columns:1fr 1fr 1fr;}}
+.grid3{display:grid;grid-template-columns:1fr;gap:14px;}
+@media(min-width:580px){.grid3{grid-template-columns:1fr 1fr;}}
+@media(min-width:860px){.grid3{grid-template-columns:1fr 1fr 1fr;}}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;}
+
+/* ===== BIRTH FIELDS ===== */
+.birth-layout{display:grid;grid-template-columns:1fr;gap:14px;}
+@media(min-width:580px){.birth-layout{grid-template-columns:1fr 1fr;}}
+@media(min-width:860px){.birth-layout{grid-template-columns:1fr 1fr 1fr;}}
+.birth-photos{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;}
+.photo-box{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;box-shadow:0 3px 12px var(--sh);transition:transform .2s;}
+.photo-box:hover{transform:scale(1.04);}
+.photo-box img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-box .ph-emoji{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--pl),var(--bg2));font-size:2.2rem;}
+.ph-lbl{font-size:.6rem;color:var(--muted);font-weight:700;margin-top:4px;}
+.photo-box.fp{width:90px;height:110px;}
+.photo-box.fp .ph-emoji{font-size:2.8rem;}
+.photo-box.first{flex:1;min-width:150px;height:140px;}
+.photo-box.thumb{width:65px;height:65px;}
+.photo-box.thumb .ph-emoji{font-size:1.4rem;}
+.photo-add-btn{width:65px;height:65px;border-radius:12px;border:2px dashed var(--pl);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--p);transition:all .2s;font-size:1.2rem;}
+.photo-add-btn:hover{background:var(--pl);border-color:var(--p);}
+.photo-add-btn span{font-size:.6rem;margin-top:3px;font-weight:700;}
+
+.ifield{background:var(--bg);border-radius:12px;padding:12px 15px;box-shadow:0 2px 8px var(--sh);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:3px;}
+.ifield:hover{transform:translateY(-2px);box-shadow:0 5px 14px var(--sh);}
+.ifield-ico{font-size:1.2rem;}
+.ifield-lbl{font-size:.65rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.ifield-val{font-size:.95rem;font-weight:700;color:var(--txt);}
+.ifield-val.empty-val{color:var(--muted);font-weight:400;font-size:.82rem;}
+
+/* ===== HEIGHT CARD ===== */
+.hcard{background:var(--bg);border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 10px var(--sh);border-top:4px solid var(--p);transition:transform .2s;position:relative;cursor:pointer;}
+.hcard:hover{transform:translateY(-4px);}
+.hcard-photo{width:56px;height:56px;border-radius:50%;background:var(--pl);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;}
+.hcard-photo img{width:100%;height:100%;object-fit:cover;}
+.hcard-val{font-size:1.3rem;font-weight:900;color:var(--pd);}
+.hcard-unit{font-size:.7rem;color:var(--muted);}
+.hcard-age{font-size:.72rem;color:var(--muted);margin-top:4px;}
+.hcard-date{font-size:.68rem;color:var(--muted);}
+.card-actions{position:absolute;top:8px;right:8px;display:flex;gap:4px;opacity:0;transition:opacity .2s;}
+body.ltr .card-actions{right:auto;left:8px;}
+.hcard:hover .card-actions,.cert-card:hover .card-actions,.event-card:hover .card-actions{opacity:1;}
+.act-btn{width:26px;height:26px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .2s;}
+.act-edit{background:var(--p);color:#fff;}
+.act-del{background:#ff4757;color:#fff;}
+.act-edit:hover{background:var(--pd);}
+.act-del:hover{background:#c0392b;}
+
+/* ===== CERT CARD ===== */
+.cert-card{background:var(--bg);border-radius:14px;overflow:hidden;box-shadow:0 3px 14px var(--sh);transition:transform .2s;position:relative;cursor:pointer;}
+.cert-card:hover{transform:translateY(-4px);}
+.cert-img{height:110px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;}
+.cert-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.cert-emoji{position:relative;z-index:1;}
+.cert-thumbs{position:absolute;bottom:7px;right:7px;display:flex;gap:3px;}
+body.ltr .cert-thumbs{right:auto;left:7px;}
+.ct{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:.85rem;overflow:hidden;cursor:pointer;}
+.ct img{width:100%;height:100%;object-fit:cover;}
+.cert-body{padding:12px;}
+.cert-title{font-size:.9rem;font-weight:800;margin-bottom:4px;}
+.cert-detail{font-size:.75rem;color:var(--muted);line-height:1.5;}
+.cert-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.cert-meta span{background:var(--card);padding:3px 9px;border-radius:20px;font-size:.68rem;color:var(--pd);font-weight:700;display:flex;align-items:center;gap:3px;}
+
+/* ===== EVENT CARD ===== */
+.event-card{background:var(--bg);border-radius:14px;overflow:hidden;box-shadow:0 3px 12px var(--sh);transition:transform .2s;position:relative;cursor:pointer;}
+.event-card:hover{transform:translateY(-4px);}
+.event-img{height:105px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.8rem;position:relative;}
+.event-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.event-emoji{position:relative;z-index:1;}
+.etype{position:absolute;top:7px;right:7px;background:var(--p);color:#fff;font-size:.62rem;font-weight:800;padding:3px 9px;border-radius:20px;z-index:2;}
+body.ltr .etype{right:auto;left:7px;}
+.event-body{padding:11px;}
+.event-title{font-size:.85rem;font-weight:800;margin-bottom:3px;}
+.event-detail{font-size:.72rem;color:var(--muted);line-height:1.5;}
+.event-meta{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap;}
+.event-meta span{font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:3px;}
+.event-imgs{display:flex;gap:4px;margin-top:7px;}
+.eimg{width:30px;height:30px;border-radius:6px;background:var(--pl);display:flex;align-items:center;justify-content:center;font-size:.85rem;overflow:hidden;cursor:pointer;}
+.eimg img{width:100%;height:100%;object-fit:cover;}
+.ecount{width:30px;height:30px;border-radius:6px;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;}
+
+/* ===== EDU STAGE ===== */
+.edu-stage{margin-bottom:26px;}
+.edu-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.edu-icon{width:42px;height:42px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.edu-name{font-size:.95rem;font-weight:800;}
+.edu-sub{font-size:.72rem;color:var(--muted);}
+
+/* ===== MODAL ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:var(--card);border-radius:20px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:mopen .3s ease;}
+@keyframes mopen{from{opacity:0;transform:scale(.92)translateY(20px);}to{opacity:1;transform:scale(1)translateY(0);}}
+.mhead{padding:18px 20px 14px;border-bottom:1px solid var(--bg2);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1;border-radius:20px 20px 0 0;}
+.mhead h3{font-size:1rem;font-weight:900;color:var(--pd);}
+.mclose{width:32px;height:32px;border-radius:50%;border:none;background:var(--bg2);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s;}
+.mclose:hover{background:var(--pl);color:var(--pd);}
+.mbody{padding:18px 20px;}
+.mfoot{padding:12px 20px 18px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--bg2);}
+
+/* Form elements */
+.fgroup{margin-bottom:14px;}
+.flbl{display:block;font-size:.75rem;font-weight:700;color:var(--pd);margin-bottom:5px;}
+.finput,.fselect,.ftextarea{width:100%;padding:10px 14px;border:2px solid var(--bg2);border-radius:10px;font-family:inherit;font-size:.85rem;color:var(--txt);background:var(--bg);transition:border-color .2s;outline:none;}
+.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--p);}
+.ftextarea{min-height:80px;resize:vertical;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fbtn{padding:9px 22px;border-radius:20px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:700;transition:all .25s;}
+.fbtn-primary{background:var(--p);color:#fff;box-shadow:0 3px 10px var(--sh);}
+.fbtn-primary:hover{background:var(--pd);}
+.fbtn-cancel{background:var(--bg2);color:var(--muted);}
+.fbtn-cancel:hover{background:var(--pl);}
+
+/* Photo upload area */
+.photo-upload-area{border:2px dashed var(--pl);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);}
+.photo-upload-area:hover{border-color:var(--p);background:var(--pl);}
+.photo-upload-area input{display:none;}
+.pua-icon{font-size:2rem;color:var(--p);margin-bottom:6px;}
+.pua-text{font-size:.78rem;color:var(--muted);}
+.photo-preview-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.ppreview{width:60px;height:60px;border-radius:8px;object-fit:cover;position:relative;cursor:pointer;}
+.ppreview-wrap{position:relative;width:60px;height:60px;}
+.ppreview-wrap img{width:100%;height:100%;border-radius:8px;object-fit:cover;}
+.ppreview-del{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:#ff4757;color:#fff;border:none;cursor:pointer;font-size:.6rem;display:flex;align-items:center;justify-content:center;}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:20px;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%;max-height:80vh;border-radius:12px;object-fit:contain;}
+.lb-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.2rem;}
+.lb-nav{display:flex;gap:20px;}
+.lb-nav-btn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:8px 20px;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:700;}
+.lb-nav-btn:hover{background:rgba(255,255,255,.4);}
+.lb-caption{color:#fff;font-size:.82rem;text-align:center;opacity:.8;}
+
+/* ===== COLOR LEGEND BAR ===== */
+.legend-bar{max-width:880px;margin:10px auto;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap;}
+.lcard{background:var(--card);border-radius:10px;padding:8px 12px;box-shadow:0 2px 8px var(--sh);display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s;border:2px solid transparent;flex:1;min-width:130px;}
+.lcard:hover{transform:translateY(-2px);}
+.lcard.active{border-color:var(--p);}
+.ldot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+.ltext{font-size:.72rem;font-weight:700;}
+.lsub{font-size:.6rem;color:var(--muted);}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pd);color:#fff;padding:10px 24px;border-radius:30px;font-size:.82rem;font-weight:700;z-index:900;transition:transform .3s;box-shadow:0 4px 20px rgba(0,0,0,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ===== FOOTER ===== */
+.footer{text-align:center;padding:28px 16px;color:var(--muted);font-size:.75rem;}
+
+/* ===== PROFILE EDIT ===== */
+.profile-edit-bar{display:flex;justify-content:flex-end;padding:0 20px 12px;}
+body.ltr .profile-edit-bar{justify-content:flex-start;}
+.pedit-btn{background:var(--bg2);color:var(--pd);border:none;padding:6px 16px;border-radius:20px;cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:5px;transition:all .2s;}
+.pedit-btn:hover{background:var(--pl);}
+
+/* ===== MEDIA QUERIES ===== */
+@media(max-width:480px){
+  .topbar{flex-direction:column;align-items:flex-start;}
+  .pname{font-size:1.2rem;}
+  .stage-sw{overflow-x:auto;max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo"><span>🌟</span><span id="logo-txt">ذاكرة الأجيال</span></div>
+  <div class="controls">
+    <div class="stage-sw">
+      <button class="sbtn active" onclick="setStage('childhood')"><span id="s0">🌸 الطفولة</span></button>
+      <button class="sbtn" onclick="setStage('adolescence')"><span id="s1">🌱 المراهقة</span></button>
+      <button class="sbtn" onclick="setStage('adulthood')"><span id="s2">🌳 الشباب</span></button>
+    </div>
+    <div class="palette">
+      <div class="dot active" style="background:#FF6B9D;" onclick="setTheme('',this)" title="وردي - البراءة"></div>
+      <div class="dot" style="background:#4FC3F7;" onclick="setTheme('blue',this)" title="أزرق - الهدوء"></div>
+      <div class="dot" style="background:#43D9A2;" onclick="setTheme('green',this)" title="أخضر - النمو"></div>
+      <div class="dot" style="background:#FB923C;" onclick="setTheme('orange',this)" title="برتقالي - الطاقة"></div>
+      <div class="dot" style="background:#A78BFA;" onclick="setTheme('purple',this)" title="بنفسجي - الخيال"></div>
+    </div>
+    <button class="langbtn" onclick="toggleLang()">EN | عر</button>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="lcard active" onclick="setTheme('',null,0)"><div class="ldot" style="background:#FF6B9D;"></div><div><div class="ltext" id="lc0t">وردي</div><div class="lsub" id="lc0s">البراءة والحب</div></div></div>
+  <div class="lcard" onclick="setTheme('blue',null,1)"><div class="ldot" style="background:#4FC3F7;"></div><div><div class="ltext" id="lc1t">أزرق سماوي</div><div class="lsub" id="lc1s">الهدوء والثقة</div></div></div>
+  <div class="lcard" onclick="setTheme('green',null,2)"><div class="ldot" style="background:#43D9A2;"></div><div><div class="ltext" id="lc2t">أخضر نعناعي</div><div class="lsub" id="lc2s">النمو والأمل</div></div></div>
+  <div class="lcard" onclick="setTheme('orange',null,3)"><div class="ldot" style="background:#FB923C;"></div><div><div class="ltext" id="lc3t">برتقالي دافئ</div><div class="lsub" id="lc3s">الطاقة والإبداع</div></div></div>
+  <div class="lcard" onclick="setTheme('purple',null,4)"><div class="ldot" style="background:#A78BFA;"></div><div><div class="ltext" id="lc4t">بنفسجي حالم</div><div class="lsub" id="lc4s">الخيال والتميز</div></div></div>
+</div>
+
+<!-- COVER -->
+<div class="cover" id="coverEl" style="margin-top:6px;">
+  <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+  <div class="cemoji" id="ce0">🌸</div>
+  <div class="cemoji" id="ce1">⭐</div>
+  <div class="cemoji" id="ce2">🦋</div>
+  <div class="sbadge" id="stageBadge">🌸 مرحلة الطفولة | Childhood</div>
+  <button class="cover-edit-btn" onclick="openModal('profile')"><i class="fa fa-pen"></i> <span id="coveredit-lbl">تعديل الملف</span></button>
+</div>
+
+<!-- PROFILE CARD -->
+<div class="wrap">
+<div class="pcard">
+  <div class="ptop">
+    <div class="avwrap">
+      <div class="av" id="mainAvatar" onclick="openModal('avatar')">👶</div>
+      <div class="av-edit" onclick="openModal('avatar')"><i class="fa fa-camera"></i></div>
+    </div>
+    <div class="pinfo">
+      <div class="pname" id="profileName">محمد عبدالله</div>
+      <div class="psub" id="profileSub">📅 تاريخ الميلاد: ١٥ مارس ٢٠١٨</div>
+      <div class="ptags" id="profileTags">
+        <span class="ptag" id="stageTag">🌸 طفولة</span>
+        <span class="ptag" id="placeTag">📍 الرياض</span>
+      </div>
+    </div>
+  </div>
+  <div class="pstats">
+    <div class="pstat" onclick="openTab('birth')"><span class="pstat-n">🍼</span><span class="pstat-l" id="st0">الولادة</span></div>
+    <div class="pstat" onclick="openTab('height')"><span class="pstat-n" id="heightCountEl">0</span><span class="pstat-l" id="st1">سجلات النمو</span></div>
+    <div class="pstat" onclick="openTab('certs')"><span class="pstat-n" id="certCountEl">0</span><span class="pstat-l" id="st2">الشهادات</span></div>
+    <div class="pstat" onclick="openTab('edu')"><span class="pstat-n" id="eventCountEl">0</span><span class="pstat-l" id="st3">الأحداث</span></div>
+  </div>
+  <div class="profile-edit-bar">
+    <button class="pedit-btn" onclick="openModal('profile')"><i class="fa fa-pen"></i> <span id="peditlbl">تعديل الملف الشخصي</span></button>
+  </div>
+</div>
+</div>
+
+<!-- TABS -->
+<div class="tabswrap">
+  <div class="tabsbar">
+    <button class="tbtn active" onclick="openTab('birth')" id="tbirth"><span>🍼</span><span id="tb0">الولادة</span></button>
+    <button class="tbtn" onclick="openTab('height')" id="theight"><span>📏</span><span id="tb1">الطول والوزن</span></button>
+    <button class="tbtn" onclick="openTab('certs')" id="tcerts"><span>🏅</span><span id="tb2">الشهادات</span></button>
+    <button class="tbtn" onclick="openTab('edu')" id="tedu"><span>📚</span><span id="tb3">المسيرة التعليمية</span></button>
+  </div>
+
+  <!-- ===== BIRTH TAB ===== -->
+  <div class="tcontent active" id="tab-birth">
+    <div class="sec-title">🍼 <span id="sec-birth">بيانات الولادة</span></div>
+    <div class="birth-layout" id="birthLayout">
+      <!-- Photos row -->
+      <div class="birth-photos" id="birthPhotosRow">
+        <div class="photo-box fp" onclick="openModal('birthFootprint')">
+          <div class="ph-emoji" id="fpEmoji">👣<span class="ph-lbl" id="fp-lbl">بصمة القدم</span></div>
+        </div>
+        <div class="photo-box first" onclick="openModal('birthFirst')">
+          <div class="ph-emoji" id="firstPhotoEl">👶<div class="ph-lbl" id="fp2-lbl" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.35);color:#fff;font-size:.65rem;padding:4px;text-align:center;">أول صورة</div></div>
+        </div>
+        <div id="birthExtraPhotos" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;"></div>
+        <div class="photo-add-btn" onclick="openModal('birthExtraPhoto')"><i class="fa fa-plus"></i><span id="add-photo-lbl">إضافة صورة</span></div>
+      </div>
+      <!-- Info fields -->
+      <div class="ifield" onclick="openModal('birthName')">
+        <div class="ifield-ico">👦</div>
+        <div class="ifield-lbl" id="bn-lbl">الاسم</div>
+        <div class="ifield-val empty-val" id="birth-name-val">اضغط للإضافة...</div>
+      </div>
+      <div class="ifield" onclick="openModal('birthDate')">
+        <div class="ifield-ico">📅</div>
+        <div class="ifield-lbl" id="bd-lbl">تاريخ الولادة</div>
+        <div class="ifield-val empty-val" id="birth-date-val">اضغط للإضافة...</div>
+      </div>
+      <div class="ifield" onclick="openModal('birthTime')">
+        <div class="ifield-ico">⏰</div>
+        <div class="ifield-lbl" id="bt-lbl">وقت الولادة</div>
+        <div class="ifield-val empty-val" id="birth-time-val">اضغط للإضافة...</div>
+      </div>
+      <div class="ifield" onclick="openModal('birthHeight')">
+        <div class="ifield-ico">📏</div>
+        <div class="ifield-lbl" id="bh-lbl">الطول عند الولادة</div>
+        <div class="ifield-val empty-val" id="birth-height-val">اضغط للإضافة...</div>
+      </div>
+      <div class="ifield" onclick="openModal('birthWeight')">
+        <div class="ifield-ico">⚖️</div>
+        <div class="ifield-lbl" id="bw-lbl">الوزن عند الولادة</div>
+        <div class="ifield-val empty-val" id="birth-weight-val">اضغط للإضافة...</div>
+      </div>
+      <div class="ifield" onclick="openModal('birthPlace')">
+        <div class="ifield-ico">🏥</div>
+        <div class="ifield-lbl" id="bp-lbl">مكان الولادة</div>
+        <div class="ifield-val empty-val" id="birth-place-val">اضغط للإضافة...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HEIGHT TAB ===== -->
+  <div class="tcontent" id="tab-height">
+    <div class="sec-title">📏 <span id="sec-height">سجل النمو</span></div>
+    <button class="add-btn" onclick="openModal('addHeight')"><i class="fa fa-plus"></i> <span id="add-height-lbl">إضافة قياس</span></button>
+    <div class="hgrid" id="heightGrid">
+      <div class="empty" id="heightEmpty"><span class="empty-icon">📏</span><span class="empty-txt" id="height-empty-txt">لا توجد قياسات بعد. اضغط إضافة قياس</span></div>
+    </div>
+  </div>
+
+  <!-- ===== CERTS TAB ===== -->
+  <div class="tcontent" id="tab-certs">
+    <div class="sec-title">🏅 <span id="sec-certs">الشهادات والتقدير</span></div>
+    <button class="add-btn" onclick="openModal('addCert')"><i class="fa fa-plus"></i> <span id="add-cert-lbl">إضافة شهادة</span></button>
+    <div class="grid2" id="certsGrid">
+      <div class="empty" id="certsEmpty"><span class="empty-icon">🏅</span><span class="empty-txt" id="certs-empty-txt">لا توجد شهادات بعد. اضغط إضافة شهادة</span></div>
+    </div>
+  </div>
+
+  <!-- ===== EDU TAB ===== -->
+  <div class="tcontent" id="tab-edu">
+    <div class="sec-title">📚 <span id="sec-edu">المسيرة التعليمية والأحداث</span></div>
+    <button class="add-btn" onclick="openModal('addEvent')"><i class="fa fa-plus"></i> <span id="add-event-lbl">إضافة حدث</span></button>
+    <div id="eduStages"></div>
+    <div class="empty" id="eduEmpty"><span class="empty-icon">📚</span><span class="empty-txt" id="edu-empty-txt">لا توجد أحداث بعد. اضغط إضافة حدث</span></div>
+  </div>
+
+</div><!-- /tabswrap -->
+
+<div class="footer"><p id="footer-txt">🌟 صفحة خاصة لحفظ ذكريات الأبناء الثمينة</p></div>
+
+<!-- ===== MODAL ===== -->
+<div class="overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox">
+    <div class="mhead">
+      <h3 id="modalTitle">عنوان</h3>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mbody" id="modalBody"></div>
+    <div class="mfoot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lbImg" src="" alt=""/>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== STATE =====
+const state = {
+  lang: 'ar',
+  stage: 'childhood',
+  theme: '',
+  profile: { name:'محمد عبدالله', dob:'١٥ مارس ٢٠١٨', place:'الرياض', avatar:'👶' },
+  birth: { name:'', date:'', time:'', height:'', weight:'', place:'', footprint:null, firstPhoto:null, extraPhotos:[] },
+  heights: [],
+  certs: [],
+  events: []
+};
+
+// ===== TRANSLATIONS =====
+const T = {
+  ar:{
+    logo:'ذاكرة الأجيال', s0:'🌸 الطفولة', s1:'🌱 المراهقة', s2:'🌳 الشباب',
+    stageBadge:{childhood:'🌸 مرحلة الطفولة | Childhood',adolescence:'🌱 مرحلة المراهقة | Adolescence',adulthood:'🌳 مرحلة الشباب | Adulthood'},
+    stageTag:{childhood:'🌸 طفولة',adolescence:'🌱 مراهقة',adulthood:'🌳 شباب'},
+    avatar:{childhood:'👶',adolescence:'🧒',adulthood:'👨'},
+    coveredit:'تعديل الملف', peditlbl:'تعديل الملف الشخصي',
+    st0:'الولادة', st1:'سجلات النمو', st2:'الشهادات', st3:'الأحداث',
+    tb0:'الولادة', tb1:'الطول والوزن', tb2:'الشهادات', tb3:'المسيرة التعليمية',
+    'fp-lbl':'بصمة القدم','fp2-lbl':'أول صورة','add-photo-lbl':'إضافة صورة',
+    'bn-lbl':'الاسم','bd-lbl':'تاريخ الولادة','bt-lbl':'وقت الولادة',
+    'bh-lbl':'الطول عند الولادة','bw-lbl':'الوزن عند الولادة','bp-lbl':'مكان الولادة',
+    'add-height-lbl':'إضافة قياس','add-cert-lbl':'إضافة شهادة','add-event-lbl':'إضافة حدث',
+    'sec-birth':'بيانات الولادة','sec-height':'سجل النمو','sec-certs':'الشهادات والتقدير','sec-edu':'المسيرة التعليمية والأحداث',
+    'height-empty-txt':'لا توجد قياسات بعد. اضغط إضافة قياس',
+    'certs-empty-txt':'لا توجد شهادات بعد. اضغط إضافة شهادة',
+    'edu-empty-txt':'لا توجد أحداث بعد. اضغط إضافة حدث',
+    'footer-txt':'🌟 صفحة خاصة لحفظ ذكريات الأبناء الثمينة',
+    'lc0t':'وردي','lc0s':'البراءة والحب',
+    'lc1t':'أزرق سماوي','lc1s':'الهدوء والثقة',
+    'lc2t':'أخضر نعناعي','lc2s':'النمو والأمل',
+    'lc3t':'برتقالي دافئ','lc3s':'الطاقة والإبداع',
+    'lc4t':'بنفسجي حالم','lc4s':'الخيال والتميز',
+    save:'حفظ', cancel:'إلغاء', edit:'تعديل', delete:'حذف',
+    addPhoto:'إضافة صورة', choosePhoto:'اختر صورة', clickToAdd:'اضغط للإضافة...',
+    toast_saved:'تم الحفظ بنجاح ✅', toast_deleted:'تم الحذف 🗑️',
+    eduStages:['🎠 مرحلة الطفولة المبكرة وروضة الأطفال','📖 المرحلة الابتدائية','🎒 المرحلة المتوسطة','🎓 المرحلة الثانوية','🏛️ الجامعة'],
+    eduStageKeys:['kindergarten','primary','middle','secondary','university'],
+    eventTypes:['تكريم','تطوع','نجاح','زفاف','حفلة','رحلة','مسابقة','أخرى'],
+    heightUnit:'سم', weightUnit:'كغ',
+    profileModal:{title:'تعديل الملف الشخصي',nameLbl:'الاسم',dobLbl:'تاريخ الميلاد',placeLbl:'المدينة'},
+  },
+  en:{
+    logo:'Memory Lane', s0:'🌸 Childhood', s1:'🌱 Adolescence', s2:'🌳 Adulthood',
+    stageBadge:{childhood:'🌸 Childhood Stage',adolescence:'🌱 Adolescence Stage',adulthood:'🌳 Adulthood Stage'},
+    stageTag:{childhood:'🌸 Childhood',adolescence:'🌱 Adolescence',adulthood:'🌳 Adulthood'},
+    avatar:{childhood:'👶',adolescence:'🧒',adulthood:'👨'},
+    coveredit:'Edit Profile', peditlbl:'Edit Profile',
+    st0:'Birth', st1:'Growth Records', st2:'Certificates', st3:'Events',
+    tb0:'Birth', tb1:'Height & Weight', tb2:'Certificates', tb3:'Education',
+    'fp-lbl':'Footprint','fp2-lbl':'First Photo','add-photo-lbl':'Add Photo',
+    'bn-lbl':'Name','bd-lbl':'Birth Date','bt-lbl':'Birth Time',
+    'bh-lbl':'Birth Height','bw-lbl':'Birth Weight','bp-lbl':'Birth Place',
+    'add-height-lbl':'Add Measurement','add-cert-lbl':'Add Certificate','add-event-lbl':'Add Event',
+    'sec-birth':'Birth Details','sec-height':'Growth Record','sec-certs':'Certificates & Awards','sec-edu':'Education Journey & Events',
+    'height-empty-txt':'No measurements yet. Tap Add Measurement',
+    'certs-empty-txt':'No certificates yet. Tap Add Certificate',
+    'edu-empty-txt':'No events yet. Tap Add Event',
+    'footer-txt':'🌟 A special page to preserve precious children\'s memories',
+    'lc0t':'Pink','lc0s':'Innocence & Love',
+    'lc1t':'Sky Blue','lc1s':'Calm & Trust',
+    'lc2t':'Mint Green','lc2s':'Growth & Hope',
+    'lc3t':'Warm Orange','lc3s':'Energy & Creativity',
+    'lc4t':'Dream Purple','lc4s':'Imagination & Distinction',
+    save:'Save', cancel:'Cancel', edit:'Edit', delete:'Delete',
+    addPhoto:'Add Photo', choosePhoto:'Choose Photo', clickToAdd:'Tap to add...',
+    toast_saved:'Saved successfully ✅', toast_deleted:'Deleted 🗑️',
+    eduStages:['🎠 Early Childhood & Kindergarten','📖 Primary School','🎒 Middle School','🎓 Secondary School','🏛️ University'],
+    eduStageKeys:['kindergarten','primary','middle','secondary','university'],
+    eventTypes:['Honor','Volunteer','Success','Wedding','Party','Trip','Competition','Other'],
+    heightUnit:'cm', weightUnit:'kg',
+    profileModal:{title:'Edit Profile',nameLbl:'Name',dobLbl:'Date of Birth',placeLbl:'City'},
+  }
+};
+
+function t(key){ return (T[state.lang][key]||key); }
+
+// ===== THEME =====
+function setTheme(theme, dotEl, legendIdx){
+  ['blue','green','orange','purple'].forEach(c=>document.body.classList.remove(c));
+  if(theme) document.body.classList.add(theme);
+  state.theme = theme;
+  document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.lcard').forEach(c=>c.classList.remove('active'));
+  const themes = ['','blue','green','orange','purple'];
+  const idx = themes.indexOf(theme);
+  if(idx>=0){
+    document.querySelectorAll('.dot')[idx]?.classList.add('active');
+    document.querySelectorAll('.lcard')[idx]?.classList.add('active');
+  }
+  if(dotEl){ dotEl.classList.add('active'); }
+}
+
+// ===== STAGE =====
+const stageConfig = {
+  childhood:{emojis:['🌸','⭐','🦋']},
+  adolescence:{emojis:['🌱','🎸','⚽']},
+  adulthood:{emojis:['🌳','🎓','💼']}
+};
+function setStage(s){
+  state.stage = s;
+  document.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',['childhood','adolescence','adulthood'][i]===s));
+  document.getElementById('stageBadge').textContent = t('stageBadge')[s];
+  document.getElementById('stageTag').textContent = t('stageTag')[s];
+  document.getElementById('mainAvatar').textContent = t('avatar')[s];
+  const emojis = stageConfig[s].emojis;
+  [0,1,2].forEach(i=>{ const el=document.getElementById('ce'+i); if(el) el.textContent=emojis[i]; });
+}
+
+// ===== LANGUAGE =====
+function toggleLang(){
+  state.lang = state.lang==='ar'?'en':'ar';
+  document.documentElement.lang = state.lang;
+  document.documentElement.dir = state.lang==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('ltr', state.lang==='en');
+  applyTranslations();
+  setStage(state.stage);
+  renderHeights(); renderCerts(); renderEdu();
+}
+function applyTranslations(){
+  const ids = ['logo-txt','coveredit-lbl','peditlbl','st0','st1','st2','st3','tb0','tb1','tb2','tb3',
+    'fp-lbl','fp2-lbl','add-photo-lbl','bn-lbl','bd-lbl','bt-lbl','bh-lbl','bw-lbl','bp-lbl',
+    'add-height-lbl','add-cert-lbl','add-event-lbl','sec-birth','sec-height','sec-certs','sec-edu',
+    'height-empty-txt','certs-empty-txt','edu-empty-txt','footer-txt',
+    'lc0t','lc0s','lc1t','lc1s','lc2t','lc2s','lc3t','lc3s','lc4t','lc4s'];
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=t(id); });
+  // Stage buttons
+  ['s0','s1','s2'].forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.textContent=t(id); });
+  document.getElementById('stageBadge').textContent = t('stageBadge')[state.stage];
+  // Empty val placeholders
+  document.querySelectorAll('.ifield-val.empty-val').forEach(el=>{
+    if(el.textContent.includes('اضغط')||el.textContent.includes('Tap')) el.textContent=t('clickToAdd');
+  });
+}
+
+// ===== TABS =====
+function openTab(id){
+  document.querySelectorAll('.tcontent').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id)?.classList.add('active');
+  document.getElementById('t'+id)?.classList.add('active');
+}
+
+// ===== MODAL =====
+let currentModal = null;
+let editIndex = null;
+
+function openModal(type, idx){
+  editIndex = (idx!==undefined) ? idx : null;
+  currentModal = type;
+  const overlay = document.getElementById('modalOverlay');
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+  const foot = document.getElementById('modalFoot');
+  overlay.classList.add('open');
+
+  const makeFooter = (onSave)=>{
+    foot.innerHTML = `<button class="fbtn fbtn-cancel" onclick="closeModal()">${t('cancel')}</button><button class="fbtn fbtn-primary" onclick="${onSave}">${t('save')}</button>`;
+  };
+
+  if(type==='profile'){
+    title.textContent = t('profileModal').title;
+    body.innerHTML = `
+      <div class="fgroup"><label class="flbl">${t('profileModal').nameLbl}</label><input class="finput" id="fi-pname" value="${state.profile.name}"/></div>
+      <div class="fgroup"><label class="flbl">${t('profileModal').dobLbl}</label><input class="finput" id="fi-pdob" value="${state.profile.dob}"/></div>
+      <div class="fgroup"><label class="flbl">${t('profileModal').placeLbl}</label><input class="finput" id="fi-pplace" value="${state.profile.place}"/></div>
+    `;
+    makeFooter('saveProfile()');
+  }
+  else if(type==='avatar'){
+    title.textContent = t('choosePhoto');
+    body.innerHTML = `
+      <div style="text-align:center;margin-bottom:16px;font-size:3rem;" id="avPreview">${state.profile.avatar}</div>
+      <div class="fgroup"><label class="flbl">${t('choosePhoto')}</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" onchange="previewAvatar(event)"/>
+          <div class="pua-icon"><i class="fa fa-upload"></i></div>
+          <div class="pua-text" id="pua-avtext">اختر صورة من جهازك</div>
+        </label>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;" id="emojiPicker">
+        ${['👶','🧒','👦','🧒‍♀️','👧','👨','👩','🧑'].map(e=>`<span style="font-size:1.8rem;cursor:pointer;padding:6px;border-radius:8px;transition:background .2s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''" onclick="selectEmoji('${e}')">${e}</span>`).join('')}
+      </div>
+    `;
+    makeFooter('saveAvatar()');
+  }
+  else if(type==='birthFootprint'||type==='birthFirst'){
+    const isFootprint = type==='birthFootprint';
+    title.textContent = isFootprint ? t('fp-lbl') : t('fp2-lbl');
+    const current = isFootprint ? state.birth.footprint : state.birth.firstPhoto;
+    body.innerHTML = `
+      <div style="text-align:center;margin-bottom:14px;">
+        ${current ? `<img src="${current}" style="max-height:150px;border-radius:10px;object-fit:cover;"/>` : `<span style="font-size:3rem;">${isFootprint?'👣':'👶'}</span>`}
+      </div>
+      <label class="photo-upload-area" style="cursor:pointer;">
+        <input type="file" accept="image/*" onchange="handleSinglePhoto(event,'${type}')"/>
+        <div class="pua-icon"><i class="fa fa-upload"></i></div>
+        <div class="pua-text">اختر صورة من جهازك</div>
+      </label>
+    `;
+    makeFooter(`saveSinglePhoto('${type}')`);
+  }
+  else if(type==='birthExtraPhoto'){
+    title.textContent = t('add-photo-lbl');
+    body.innerHTML = `
+      <label class="photo-upload-area" style="cursor:pointer;">
+        <input type="file" accept="image/*" multiple onchange="handleExtraPhotos(event)"/>
+        <div class="pua-icon"><i class="fa fa-images"></i></div>
+        <div class="pua-text">اختر صور متعددة</div>
+      </label>
+      <div class="photo-preview-grid" id="extraPreviewGrid"></div>
+    `;
+    makeFooter(`saveExtraPhotos()`);
+  }
+  else if(['birthName','birthDate','birthTime','birthHeight','birthWeight','birthPlace'].includes(type)){
+    const fieldMap = {
+      birthName:{lbl:t('bn-lbl'),ico:'👦',key:'name',placeholder:'أدخل الاسم'},
+      birthDate:{lbl:t('bd-lbl'),ico:'📅',key:'date',placeholder:'مثال: ١٥ مارس ٢٠١٨',type:'date'},
+      birthTime:{lbl:t('bt-lbl'),ico:'⏰',key:'time',placeholder:'مثال: 08:42',type:'time'},
+      birthHeight:{lbl:t('bh-lbl'),ico:'📏',key:'height',placeholder:`مثال: 49 ${t('heightUnit')}`},
+      birthWeight:{lbl:t('bw-lbl'),ico:'⚖️',key:'weight',placeholder:`مثال: 3.2 ${t('weightUnit')}`},
+      birthPlace:{lbl:t('bp-lbl'),ico:'🏥',key:'place',placeholder:'أدخل مكان الولادة'},
+    };
+    const f = fieldMap[type];
+    title.textContent = f.ico+' '+f.lbl;
+    const inputType = f.type||'text';
+    const val = state.birth[f.key]||'';
+    body.innerHTML = `<div class="fgroup"><label class="flbl">${f.lbl}</label><input class="finput" id="fi-bf" type="${inputType}" value="${val}" placeholder="${f.placeholder}" dir="auto"/></div>`;
+    makeFooter(`saveBirthField('${f.key}')`);
+  }
+  else if(type==='addHeight'||type==='editHeight'){
+    const isEdit = type==='editHeight' && editIndex!==null;
+    const h = isEdit ? state.heights[editIndex] : {};
+    title.textContent = isEdit ? t('edit') : t('add-height-lbl');
+    body.innerHTML = `
+      <div class="frow">
+        <div class="fgroup"><label class="flbl">الطول (${t('heightUnit')})</label><input class="finput" id="fi-hval" type="number" value="${h.value||''}" placeholder="مثال: 75"/></div>
+        <div class="fgroup"><label class="flbl">الوزن (${t('weightUnit')})</label><input class="finput" id="fi-wval" type="number" value="${h.weight||''}" placeholder="مثال: 10"/></div>
+      </div>
+      <div class="frow">
+        <div class="fgroup"><label class="flbl">العمر / المرحلة</label><input class="finput" id="fi-hage" value="${h.age||''}" placeholder="مثال: عمر سنة"/></div>
+        <div class="fgroup"><label class="flbl">التاريخ</label><input class="finput" id="fi-hdate" type="date" value="${h.date||''}"/></div>
+      </div>
+      <div class="fgroup"><label class="flbl">الوقت</label><input class="finput" id="fi-htime" type="time" value="${h.time||''}"/></div>
+      <div class="fgroup"><label class="flbl">صورة</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" onchange="handleCardPhoto(event,'hphoto')"/>
+          <div class="pua-icon"><i class="fa fa-upload"></i></div>
+          <div class="pua-text">اختر صورة (اختياري)</div>
+        </label>
+        <div id="hphoto-preview" style="margin-top:8px;">${h.photo?`<img src="${h.photo}" style="height:60px;border-radius:8px;"/>`:''}</div>
+      </div>
+    `;
+    window._tempPhoto = {hphoto: h.photo||null};
+    makeFooter(`saveHeight(${isEdit?editIndex:'null'})`);
+  }
+  else if(type==='addCert'||type==='editCert'){
+    const isEdit = type==='editCert' && editIndex!==null;
+    const c = isEdit ? state.certs[editIndex] : {};
+    title.textContent = isEdit ? t('edit') : t('add-cert-lbl');
+    body.innerHTML = `
+      <div class="fgroup"><label class="flbl">عنوان الشهادة</label><input class="finput" id="fi-ctitle" value="${c.title||''}" placeholder="أدخل عنوان الشهادة"/></div>
+      <div class="fgroup"><label class="flbl">التفاصيل</label><textarea class="ftextarea" id="fi-cdetail" placeholder="أدخل تفاصيل الشهادة">${c.detail||''}</textarea></div>
+      <div class="frow">
+        <div class="fgroup"><label class="flbl">التاريخ</label><input class="finput" id="fi-cdate" type="date" value="${c.date||''}"/></div>
+        <div class="fgroup"><label class="flbl">الوقت</label><input class="finput" id="fi-ctime" type="time" value="${c.time||''}"/></div>
+      </div>
+      <div class="fgroup"><label class="flbl">الصورة الرئيسية</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" onchange="handleCardPhoto(event,'cmain')"/>
+          <div class="pua-icon"><i class="fa fa-upload"></i></div>
+          <div class="pua-text">اختر صورة</div>
+        </label>
+        <div id="cmain-preview" style="margin-top:8px;">${c.mainPhoto?`<img src="${c.mainPhoto}" style="height:60px;border-radius:8px;"/>`:''}</div>
+      </div>
+      <div class="fgroup"><label class="flbl">صور إضافية</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" multiple onchange="handleMultiPhoto(event,'cextra')"/>
+          <div class="pua-icon"><i class="fa fa-images"></i></div>
+          <div class="pua-text">اختر صور متعددة</div>
+        </label>
+        <div class="photo-preview-grid" id="cextra-preview">${renderMiniPreviews(c.extraPhotos||[])}</div>
+      </div>
+    `;
+    window._tempPhoto = {cmain: c.mainPhoto||null, cextra: [...(c.extraPhotos||[])]};
+    makeFooter(`saveCert(${isEdit?editIndex:'null'})`);
+  }
+  else if(type==='addEvent'||type==='editEvent'){
+    const isEdit = type==='editEvent' && editIndex!==null;
+    const e = isEdit ? state.events[editIndex] : {};
+    title.textContent = isEdit ? t('edit') : t('add-event-lbl');
+    const stages = t('eduStages');
+    const types = t('eventTypes');
+    body.innerHTML = `
+      <div class="fgroup"><label class="flbl">نوع الحدث</label>
+        <select class="fselect" id="fi-etype">
+          ${types.map(et=>`<option value="${et}" ${e.type===et?'selected':''}>${et}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fgroup"><label class="flbl">المرحلة التعليمية</label>
+        <select class="fselect" id="fi-estage">
+          ${stages.map((s,i)=>`<option value="${t('eduStageKeys')[i]}" ${e.stage===t('eduStageKeys')[i]?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fgroup"><label class="flbl">العنوان</label><input class="finput" id="fi-etitle" value="${e.title||''}" placeholder="أدخل عنوان الحدث"/></div>
+      <div class="fgroup"><label class="flbl">التفاصيل</label><textarea class="ftextarea" id="fi-edetail" placeholder="أدخل تفاصيل الحدث">${e.detail||''}</textarea></div>
+      <div class="frow">
+        <div class="fgroup"><label class="flbl">التاريخ</label><input class="finput" id="fi-edate" type="date" value="${e.date||''}"/></div>
+        <div class="fgroup"><label class="flbl">الوقت</label><input class="finput" id="fi-etime" type="time" value="${e.time||''}"/></div>
+      </div>
+      <div class="fgroup"><label class="flbl">الصورة الرئيسية</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" onchange="handleCardPhoto(event,'emain')"/>
+          <div class="pua-icon"><i class="fa fa-upload"></i></div>
+          <div class="pua-text">اختر صورة</div>
+        </label>
+        <div id="emain-preview" style="margin-top:8px;">${e.mainPhoto?`<img src="${e.mainPhoto}" style="height:60px;border-radius:8px;"/>`:''}</div>
+      </div>
+      <div class="fgroup"><label class="flbl">صور إضافية</label>
+        <label class="photo-upload-area" style="cursor:pointer;">
+          <input type="file" accept="image/*" multiple onchange="handleMultiPhoto(event,'eextra')"/>
+          <div class="pua-icon"><i class="fa fa-images"></i></div>
+          <div class="pua-text">اختر صور متعددة</div>
+        </label>
+        <div class="photo-preview-grid" id="eextra-preview">${renderMiniPreviews(e.extraPhotos||[])}</div>
+      </div>
+    `;
+    window._tempPhoto = {emain: e.mainPhoto||null, eextra: [...(e.extraPhotos||[])]};
+    makeFooter(`saveEvent(${isEdit?editIndex:'null'})`);
+  }
+}
+
+function renderMiniPreviews(arr){
+  return arr.map((src,i)=>`<div class="ppreview-wrap"><img src="${src}" class="ppreview"/><button class="ppreview-del" onclick="removeTempPhoto(this,${i})">✕</button></div>`).join('');
+}
+
+// ===== PHOTO HANDLERS =====
+let _singlePhotoCb = null;
+function handleSinglePhoto(event, field){
+  const file = event.target.files[0]; if(!file) return;
+  toBase64(file, b64=>{
+    window._singlePhoto = b64;
+    event.target.closest('.photo-upload-area').nextElementSibling && (event.target.closest('.photo-upload-area').nextElementSibling.innerHTML = `<img src="${b64}" style="height:80px;border-radius:10px;"/>`);
+  });
+}
+let _tempExtraPhotos = [];
+function handleExtraPhotos(event){
+  _tempExtraPhotos = [];
+  const files = Array.from(event.target.files);
+  const grid = document.getElementById('extraPreviewGrid');
+  grid.innerHTML = '';
+  files.forEach(file=>{
+    toBase64(file, b64=>{
+      _tempExtraPhotos.push(b64);
+      const wrap = document.createElement('div'); wrap.className='ppreview-wrap';
+      const img = document.createElement('img'); img.src=b64; img.className='ppreview';
+      wrap.appendChild(img); grid.appendChild(wrap);
+    });
+  });
+}
+function handleCardPhoto(event, key){
+  const file = event.target.files[0]; if(!file) return;
+  toBase64(file, b64=>{
+    if(!window._tempPhoto) window._tempPhoto = {};
+    window._tempPhoto[key] = b64;
+    const preview = document.getElementById(key+'-preview');
+    if(preview) preview.innerHTML = `<img src="${b64}" style="height:60px;border-radius:8px;"/>`;
+  });
+}
+function handleMultiPhoto(event, key){
+  if(!window._tempPhoto) window._tempPhoto = {};
+  if(!window._tempPhoto[key]) window._tempPhoto[key] = [];
+  const files = Array.from(event.target.files);
+  files.forEach(file=>{
+    toBase64(file, b64=>{
+      window._tempPhoto[key].push(b64);
+      const preview = document.getElementById(key+'-preview');
+      if(preview){
+        const wrap = document.createElement('div'); wrap.className='ppreview-wrap';
+        const idx = window._tempPhoto[key].length-1;
+        wrap.innerHTML = `<img src="${b64}" class="ppreview"/><button class="ppreview-del" onclick="removeTempPhotoKey(this,'${key}',${idx})">✕</button>`;
+        preview.appendChild(wrap);
+      }
+    });
+  });
+}
+function removeTempPhotoKey(btn, key, idx){
+  if(window._tempPhoto && window._tempPhoto[key]) window._tempPhoto[key].splice(idx,1);
+  btn.closest('.ppreview-wrap').remove();
+}
+function removeTempPhoto(btn, idx){
+  _tempExtraPhotos.splice(idx,1);
+  btn.closest('.ppreview-wrap').remove();
+}
+function previewAvatar(event){
+  const file = event.target.files[0]; if(!file) return;
+  toBase64(file, b64=>{
+    window._tempAvatarB64 = b64;
+    document.getElementById('avPreview').innerHTML = `<img src="${b64}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;"/>`;
+  });
+}
+function selectEmoji(e){
+  window._tempAvatarB64 = null;
+  window._tempAvatarEmoji = e;
+  document.getElementById('avPreview').innerHTML = `<span style="font-size:3rem;">${e}</span>`;
+}
+function toBase64(file, cb){
+  const reader = new FileReader();
+  reader.onload = e => cb(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+// ===== SAVE FUNCTIONS =====
+function saveProfile(){
+  state.profile.name = document.getElementById('fi-pname').value || state.profile.name;
+  state.profile.dob = document.getElementById('fi-pdob').value || state.profile.dob;
+  state.profile.place = document.getElementById('fi-pplace').value || state.profile.place;
+  document.getElementById('profileName').textContent = state.profile.name;
+  document.getElementById('profileSub').textContent = '📅 '+state.profile.dob;
+  document.getElementById('placeTag').textContent = '📍 '+state.profile.place;
+  closeModal(); showToast(t('toast_saved'));
+}
+function saveAvatar(){
+  if(window._tempAvatarB64){
+    document.getElementById('mainAvatar').innerHTML = `<img src="${window._tempAvatarB64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`;
+    state.profile.avatar = window._tempAvatarB64;
+  } else if(window._tempAvatarEmoji){
+    document.getElementById('mainAvatar').textContent = window._tempAvatarEmoji;
+    state.profile.avatar = window._tempAvatarEmoji;
+  }
+  window._tempAvatarB64 = null; window._tempAvatarEmoji = null;
+  closeModal(); showToast(t('toast_saved'));
+}
+function saveSinglePhoto(type){
+  const b64 = window._singlePhoto;
+  const isFootprint = type==='birthFootprint';
+  if(b64){
+    if(isFootprint){ state.birth.footprint=b64; document.getElementById('fpEmoji').innerHTML=`<img src="${b64}" style="width:100%;height:100%;object-fit:cover;"/>`; }
+    else { state.birth.firstPhoto=b64; document.getElementById('firstPhotoEl').innerHTML=`<img src="${b64}" style="width:100%;height:100%;object-fit:cover;"/><div class="ph-lbl" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.35);color:#fff;font-size:.65rem;padding:4px;text-align:center;">${t('fp2-lbl')}</div>`; }
+    window._singlePhoto = null;
+  }
+  closeModal(); showToast(t('toast_saved'));
+}
+function saveExtraPhotos(){
+  state.birth.extraPhotos = [...(state.birth.extraPhotos||[]), ..._tempExtraPhotos];
+  renderBirthExtraPhotos(); _tempExtraPhotos = [];
+  closeModal(); showToast(t('toast_saved'));
+}
+function renderBirthExtraPhotos(){
+  const container = document.getElementById('birthExtraPhotos');
+  container.innerHTML = state.birth.extraPhotos.map((src,i)=>`
+    <div class="photo-box thumb" onclick="openLightbox('${src}','')">
+      <img src="${src}" style="width:100%;height:100%;object-fit:cover;"/>
+    </div>
+  `).join('');
+}
+function saveBirthField(key){
+  const val = document.getElementById('fi-bf').value;
+  if(!val) return;
+  state.birth[key] = val;
+  const el = document.getElementById('birth-'+key+'-val');
+  if(el){ el.textContent=val; el.classList.remove('empty-val'); }
+  closeModal(); showToast(t('toast_saved'));
+}
+function saveHeight(idx){
+  const val = document.getElementById('fi-hval').value;
+  const w = document.getElementById('fi-wval').value;
+  const age = document.getElementById('fi-hage').value;
+  const date = document.getElementById('fi-hdate').value;
+  const time = document.getElementById('fi-htime').value;
+  const photo = window._tempPhoto?.hphoto || null;
+  if(!val) return;
+  const entry = {value:val, weight:w, age:age, date:date, time:time, photo:photo};
+  if(idx!==null && idx!==undefined) state.heights[idx]=entry;
+  else state.heights.push(entry);
+  renderHeights(); closeModal(); showToast(t('toast_saved'));
+}
+function saveCert(idx){
+  const title = document.getElementById('fi-ctitle').value;
+  const detail = document.getElementById('fi-cdetail').value;
+  const date = document.getElementById('fi-cdate').value;
+  const time = document.getElementById('fi-ctime').value;
+  const mainPhoto = window._tempPhoto?.cmain || null;
+  const extraPhotos = window._tempPhoto?.cextra || [];
+  if(!title) return;
+  const entry = {title,detail,date,time,mainPhoto,extraPhotos};
+  if(idx!==null && idx!==undefined) state.certs[idx]=entry;
+  else state.certs.push(entry);
+  renderCerts(); closeModal(); showToast(t('toast_saved'));
+}
+function saveEvent(idx){
+  const type = document.getElementById('fi-etype').value;
+  const stage = document.getElementById('fi-estage').value;
+  const title = document.getElementById('fi-etitle').value;
+  const detail = document.getElementById('fi-edetail').value;
+  const date = document.getElementById('fi-edate').value;
+  const time = document.getElementById('fi-etime').value;
+  const mainPhoto = window._tempPhoto?.emain || null;
+  const extraPhotos = window._tempPhoto?.eextra || [];
+  if(!title) return;
+  const entry = {type,stage,title,detail,date,time,mainPhoto,extraPhotos};
+  if(idx!==null && idx!==undefined) state.events[idx]=entry;
+  else state.events.push(entry);
+  renderEdu(); closeModal(); showToast(t('toast_saved'));
+}
+function deleteHeight(idx){ state.heights.splice(idx,1); renderHeights(); showToast(t('toast_deleted')); }
+function deleteCert(idx){ state.certs.splice(idx,1); renderCerts(); showToast(t('toast_deleted')); }
+function deleteEvent(idx){ state.events.splice(idx,1); renderEdu(); showToast(t('toast_deleted')); }
+
+// ===== RENDER FUNCTIONS =====
+function renderHeights(){
+  const grid = document.getElementById('heightGrid');
+  const empty = document.getElementById('heightEmpty');
+  document.getElementById('heightCountEl').textContent = state.heights.length;
+  if(!state.heights.length){ grid.innerHTML=''; grid.appendChild(empty); empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = state.heights.map((h,i)=>`
+    <div class="hcard" onclick="openLightbox('${h.photo||''}','${h.age||''} — ${h.value}${t('heightUnit')}')">
+      <div class="card-actions">
+        <button class="act-btn act-edit" onclick="event.stopPropagation();openModal('editHeight',${i})"><i class="fa fa-pen"></i></button>
+        <button class="act-btn act-del" onclick="event.stopPropagation();deleteHeight(${i})"><i class="fa fa-trash"></i></button>
+      </div>
+      <div class="hcard-photo">${h.photo?`<img src="${h.photo}"/>`:'📏'}</div>
+      <div class="hcard-val">${h.value} <span class="hcard-unit">${t('heightUnit')}</span>${h.weight?` / ${h.weight}<span class="hcard-unit">${t('weightUnit')}</span>`:''}</div>
+      ${h.age?`<div class="hcard-age">${h.age}</div>`:''}
+      ${h.date?`<div class="hcard-date">📅 ${h.date}${h.time?' ⏰ '+h.time:''}</div>`:''}
+    </div>
+  `).join('');
+}
+
+function renderCerts(){
+  const grid = document.getElementById('certsGrid');
+  const empty = document.getElementById('certsEmpty');
+  document.getElementById('certCountEl').textContent = state.certs.length;
+  if(!state.certs.length){ grid.innerHTML=''; grid.appendChild(empty); empty.style.display='block'; return; }
+  empty.style.display='none';
+  const certEmojis = ['🥇','🏆','🎨','📜','🎓','⭐','🥈','🏅'];
+  grid.innerHTML = state.certs.map((c,i)=>`
+    <div class="cert-card">
+      <div class="card-actions" style="z-index:3;">
+        <button class="act-btn act-edit" onclick="openModal('editCert',${i})"><i class="fa fa-pen"></i></button>
+        <button class="act-btn act-del" onclick="deleteCert(${i})"><i class="fa fa-trash"></i></button>
+      </div>
+      <div class="cert-img" onclick="openLightbox('${c.mainPhoto||''}','${c.title}')">
+        ${c.mainPhoto?`<img src="${c.mainPhoto}"/>`:''}
+        <span class="cert-emoji">${certEmojis[i%certEmojis.length]}</span>
+        ${c.extraPhotos?.length?`<div class="cert-thumbs">${c.extraPhotos.slice(0,2).map((src,j)=>`<div class="ct" onclick="event.stopPropagation();openLightbox('${src}','')"><img src="${src}"/></div>`).join('')}${c.extraPhotos.length>2?`<div class="ct">+${c.extraPhotos.length-2}</div>`:''}</div>`:''}
+      </div>
+      <div class="cert-body">
+        <div class="cert-title">${c.title}</div>
+        ${c.detail?`<div class="cert-detail">${c.detail}</div>`:''}
+        <div class="cert-meta">
+          ${c.date?`<span>📅 ${c.date}</span>`:''}
+          ${c.time?`<span>⏰ ${c.time}</span>`:''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEdu(){
+  const container = document.getElementById('eduStages');
+  const empty = document.getElementById('eduEmpty');
+  document.getElementById('eventCountEl').textContent = state.events.length;
+  if(!state.events.length){ container.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const stageKeys = t('eduStageKeys');
+  const stageNames = t('eduStages');
+  const eventEmojis = {[t('eventTypes')[0]]:'🏆',[t('eventTypes')[1]]:'🌳',[t('eventTypes')[2]]:'✨',[t('eventTypes')[3]]:'💍',[t('eventTypes')[4]]:'🎉',[t('eventTypes')[5]]:'✈️',[t('eventTypes')[6]]:'🥇',[t('eventTypes')[7]]:'📌'};
+  container.innerHTML = stageKeys.map((sk,si)=>{
+    const evs = state.events.map((e,i)=>({...e,_i:i})).filter(e=>e.stage===sk);
+    if(!evs.length) return '';
+    return `<div class="edu-stage">
+      <div class="edu-hdr">
+        <div class="edu-icon">${stageNames[si].split(' ')[0]}</div>
+        <div><div class="edu-name">${stageNames[si]}</div></div>
+      </div>
+      <div class="grid3">
+        ${evs.map(e=>`
+          <div class="event-card">
+            <div class="card-actions" style="z-index:3;">
+              <button class="act-btn act-edit" onclick="openModal('editEvent',${e._i})"><i class="fa fa-pen"></i></button>
+              <button class="act-btn act-del" onclick="deleteEvent(${e._i})"><i class="fa fa-trash"></i></button>
+            </div>
+            <div class="event-img" onclick="openLightbox('${e.mainPhoto||''}','${e.title}')">
+              ${e.mainPhoto?`<img src="${e.mainPhoto}"/>`:''}
+              <span class="event-emoji">${eventEmojis[e.type]||'📌'}</span>
+              <div class="etype">${e.type}</div>
+            </div>
+            <div class="event-body">
+              <div class="event-title">${e.title}</div>
+              ${e.detail?`<div class="event-detail">${e.detail}</div>`:''}
+              <div class="event-meta">
+                ${e.date?`<span>📅 ${e.date}</span>`:''}
+                ${e.time?`<span>⏰ ${e.time}</span>`:''}
+              </div>
+              ${e.extraPhotos?.length?`<div class="event-imgs">${e.extraPhotos.slice(0,3).map(src=>`<div class="eimg" onclick="event.stopPropagation();openLightbox('${src}','')"><img src="${src}"/></div>`).join('')}${e.extraPhotos.length>3?`<div class="ecount">+${e.extraPhotos.length-3}</div>`:''}</div>`:''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== MODAL CLOSE =====
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  window._tempPhoto = null; window._singlePhoto = null;
+  currentModal = null; editIndex = null;
+}
+function closeModalOutside(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+
+// ===== LIGHTBOX =====
+function openLightbox(src, caption){
+  if(!src || src==='null' || src==='') return;
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lbCaption').textContent = caption||'';
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+
+// ===== TOAST =====
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ===== DUMMY DATA =====
+function loadDummyData(){
+  state.profile = { name:'محمد عبدالله الأحمد', dob:'١٥ مارس ٢٠١٨', place:'الرياض', avatar:'👶' };
+  document.getElementById('profileName').textContent = state.profile.name;
+  document.getElementById('profileSub').textContent = '📅 ' + state.profile.dob;
+  document.getElementById('placeTag').textContent = '📍 ' + state.profile.place;
+
+  const bFields = {name:'محمد عبدالله الأحمد',date:'2018-03-15',time:'08:42',height:'49 سم',weight:'3.2 كغ',place:'مستشفى الملك فيصل التخصصي - الرياض'};
+  Object.entries(bFields).forEach(([k,v])=>{
+    const el = document.getElementById('birth-'+k+'-val');
+    if(el){ el.textContent=v; el.classList.remove('empty-val'); }
+  });
+
+  state.heights = [
+    {value:'49', weight:'3.2', age:'عند الولادة',   date:'2018-03-15', time:'08:42', photo:null},
+    {value:'62', weight:'5.5', age:'عمر ٣ أشهر',    date:'2018-06-15', time:'10:00', photo:null},
+    {value:'72', weight:'7.8', age:'عمر ٦ أشهر',    date:'2018-09-15', time:'11:00', photo:null},
+    {value:'76', weight:'9.1', age:'عمر سنة',        date:'2019-03-15', time:'09:30', photo:null},
+    {value:'88', weight:'11.4',age:'عمر سنتين',      date:'2020-03-15', time:'10:00', photo:null},
+    {value:'97', weight:'13.2',age:'عمر ٣ سنوات',   date:'2021-03-15', time:'10:00', photo:null},
+    {value:'105',weight:'15.0',age:'عمر ٤ سنوات',   date:'2022-03-15', time:'10:00', photo:null},
+    {value:'112',weight:'17.3',age:'عمر ٥ سنوات',   date:'2023-03-15', time:'10:00', photo:null},
+  ];
+
+  state.certs = [
+    {title:'شهادة تفوق دراسي',         detail:'حصل على شهادة التفوق الدراسي من مدرسة النور الابتدائية بمعدل 98% بمناسبة نهاية العام الدراسي',         date:'2024-06-10', time:'10:00', mainPhoto:null, extraPhotos:[]},
+    {title:'جائزة الرسم الإبداعي',      detail:'الفائز بالمركز الأول في مسابقة الرسم على مستوى المنطقة التعليمية الثالثة',                            date:'2024-01-20', time:'14:00', mainPhoto:null, extraPhotos:[]},
+    {title:'شهادة حفظ القرآن الكريم',   detail:'أتم حفظ جزء عمّ بالكامل مع التجويد في مركز تحفيظ القرآن الكريم',                                     date:'2023-10-05', time:'17:00', mainPhoto:null, extraPhotos:[]},
+    {title:'بطل رياضة السباحة',          detail:'حصل على المركز الأول في سباق 25 متر حرة لفئة عمرية 5-7 سنوات',                                        date:'2023-07-14', time:'09:00', mainPhoto:null, extraPhotos:[]},
+  ];
+
+  state.events = [
+    {type:'تكريم',   stage:'kindergarten', title:'حفل تخرج الروضة',              detail:'تخرج من روضة المستقبل الدولية بتفوق وتميز بحضور العائلة الكريمة والأصدقاء',                    date:'2023-06-15', time:'17:00', mainPhoto:null, extraPhotos:[]},
+    {type:'تطوع',   stage:'kindergarten', title:'يوم تشجير المدرسة',              detail:'شارك في مبادرة تشجير الروضة وزراعة الأشجار والورود مع زملائه وأساتذته',                       date:'2023-03-21', time:'09:00', mainPhoto:null, extraPhotos:[]},
+    {type:'حفلة',   stage:'kindergarten', title:'عيد ميلاد الخامسة 🎂',           detail:'احتفال بعيد ميلاده الخامس مع الأصدقاء والعائلة بحفلة مميزة وكيكة الأميرات',                   date:'2023-03-15', time:'18:00', mainPhoto:null, extraPhotos:[]},
+    {type:'نجاح',   stage:'primary',      title:'التفوق بالصف الأول الابتدائي',   detail:'حصل على المركز الأول في صفه بمعدل 98% وحاز على ثناء المعلمين والإدارة المدرسية',               date:'2024-06-10', time:'11:00', mainPhoto:null, extraPhotos:[]},
+    {type:'مسابقة', stage:'primary',      title:'بطولة الرياضيات المدرسية',       detail:'فاز بالمركز الثاني في مسابقة الرياضيات على مستوى المدرسة للصفوف الأولى',                       date:'2024-02-20', time:'10:00', mainPhoto:null, extraPhotos:[]},
+    {type:'رحلة',   stage:'primary',      title:'رحلة إلى حديقة الحيوان',         detail:'شارك في الرحلة المدرسية السنوية إلى حديقة حيوان الرياض مع زملاء الصف',                        date:'2024-04-10', time:'08:00', mainPhoto:null, extraPhotos:[]},
+    {type:'تكريم',  stage:'primary',      title:'طالب الشهر - أبريل',             detail:'اختير طالب الشهر لأبريل من قِبل مجلس المعلمين تقديراً لتميزه الأكاديمي والسلوكي',             date:'2024-04-30', time:'12:00', mainPhoto:null, extraPhotos:[]},
+  ];
+}
+
+// ===== INIT =====
+loadDummyData();
+renderHeights(); renderCerts(); renderEdu();
+applyTranslations();
+</script>
+</body>
+</html>
